@@ -1,6 +1,7 @@
 package Controller;
 
 import Service.AccountService;
+import Service.MessageService;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
@@ -12,6 +13,13 @@ import io.javalin.http.Context;
 public class SocialMediaController {
 
     AccountService accountService;
+    MessageService messageService;
+
+    public SocialMediaController(){
+        this.accountService = new AccountService();
+        this.messageService = new MessageService();
+
+    }
 
     /**
      * In order for the test cases to work, you will need to write the endpoints in the startAPI() method, as the test
@@ -41,8 +49,7 @@ public class SocialMediaController {
 
         // Create endpoint for PATCH /messages/{message_id}
         app.patch("/messages/{message_id}", this::patchMessageHandler);
-        
-
+    
         return app;
     }
 

@@ -1,5 +1,8 @@
 package Controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import Service.AccountService;
 import Service.MessageService;
 import io.javalin.Javalin;
@@ -57,31 +60,38 @@ public class SocialMediaController {
      * Define all handlers for each endpoint
      */
 
-    private void postRegistrationHandler(Context context) {
+    private void postRegistrationHandler(Context context) throws JsonProcessingException{
+        ObjectMapper mapper = new ObjectMapper();
         context.json("sample text");
     }
 
-    private void postLoginHandler(Context context) {
+    private void postLoginHandler(Context context) throws JsonProcessingException{
+        ObjectMapper mapper = new ObjectMapper();
         context.json("sample text");
     }
 
-    private void postMessagesHandler(Context context) {
+    private void postMessagesHandler(Context context) throws JsonProcessingException{
+        ObjectMapper mapper = new ObjectMapper();
         context.json("sample text");
     }
 
-    private void getAllMessagesHandler(Context context) {
+    private void getAllMessagesHandler(Context context) throws JsonProcessingException{
+        ObjectMapper mapper = new ObjectMapper();
         context.json("sample text");
     }
 
-    private void getMessageHandler(Context context) {
+    private void getMessageHandler(Context context) throws JsonProcessingException{
+        ObjectMapper mapper = new ObjectMapper();
         context.json("sample text");
     }
 
-    private void deleteMessageHandler(Context context) {
+    private void deleteMessageHandler(Context context) throws JsonProcessingException{
+        ObjectMapper mapper = new ObjectMapper();
         context.json("sample text");
     }
 
-    private void patchMessageHandler(Context context) {
+    private void patchMessageHandler(Context context) throws JsonProcessingException{
+        ObjectMapper mapper = new ObjectMapper();
         context.json("sample text");
     }
 

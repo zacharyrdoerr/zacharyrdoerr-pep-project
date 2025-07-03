@@ -68,11 +68,18 @@ public class SocialMediaController {
      * Define all handlers for each endpoint
      */
 
+    // handler for account registration
     private void postRegistrationHandler(Context context) throws JsonProcessingException{
         
         ObjectMapper mapper = new ObjectMapper();
+
+        // read account from body and use mapper to create account object
         Account acc = mapper.readValue(context.body(), Account.class);
+
+        // call postAccount within accountService
         Account new_acc = accountService.postAccount(acc);
+
+        // check for null, if not return the account with status 200
         if (new_acc != null){
             context.status(200).json(mapper.writeValueAsString(new_acc));
         }else{
@@ -81,10 +88,17 @@ public class SocialMediaController {
         
     }
 
+    // handler for account login
     private void postLoginHandler(Context context) throws JsonProcessingException{
         ObjectMapper mapper = new ObjectMapper();
+
+        // use mapper to create account object from json body
         Account acc = mapper.readValue(context.body(), Account.class);
+
+        // obtain account from database 
         Account login = accountService.loginAccount(acc);
+
+        // check for null, if not return account with status 200
         if (login != null){
             context.status(200).json(mapper.writeValueAsString(login));  
         }else{
@@ -92,10 +106,17 @@ public class SocialMediaController {
         }
     }
 
+    // handler for posting messages 
     private void postMessagesHandler(Context context) throws JsonProcessingException{
         ObjectMapper mapper = new ObjectMapper();
+
+        // use mapper to create message object from json body
         Message message = mapper.readValue(context.body(), Message.class);
+        
+        // call postMessage from messageService
         Message postedMessage = messageService.postMessage(message);
+
+        // check if message is null, if not return message with 200 status
         if (postedMessage != null){
             context.status(200).json(mapper.writeValueAsString(postedMessage));
         }else{
@@ -103,15 +124,20 @@ public class SocialMediaController {
         }
     }
 
+    // handler for retrieving all messages in database
     private void getAllMessagesHandler(Context context) throws JsonProcessingException{
         
+        // call getAllMessages and return the list with status 200
         List<Message> allMessages = messageService.getAllMessages();
         context.status(200).json(allMessages);
         
     }
 
+    // handler for getting message by id
     private void getMessageHandler(Context context) throws JsonProcessingException{
         ObjectMapper mapper = new ObjectMapper();
+
+        // uses pathParamAsClass method to retrive the id from the path
         int message_id = context.pathParamAsClass("message_id", Integer.class).get();
         Message retrievedMessage = messageService.getMessageById(message_id);
 
@@ -122,6 +148,7 @@ public class SocialMediaController {
         context.status(200);
     }
 
+    // handler for deleting message by id
     private void deleteMessageHandler(Context context) throws JsonProcessingException{
         ObjectMapper mapper = new ObjectMapper();
         int message_id = context.pathParamAsClass("message_id", Integer.class).get();
@@ -134,8 +161,11 @@ public class SocialMediaController {
         context.status(200);
     }
 
+    // handler for updating messages
     private void patchMessageHandler(Context context) throws JsonProcessingException{
         ObjectMapper mapper = new ObjectMapper();
+
+        // uses MessageUpdate class with one String object to parse the message from json body
         MessageUpdate message = mapper.readValue(context.body(), MessageUpdate.class);
         int message_id = context.pathParamAsClass("message_id", Integer.class).get();
         Message updatedMessage = messageService.updateMessageById(message.getMessage_text(), message_id);
@@ -150,6 +180,7 @@ public class SocialMediaController {
         
     }
 
+    // handler for obtaining all messages by an account id
     private void getMessagesByAccountHandler(Context context) throws JsonProcessingException{
         
         int account_id = context.pathParamAsClass("account_id", Integer.class).get();

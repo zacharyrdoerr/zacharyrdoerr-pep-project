@@ -59,7 +59,7 @@ public class SocialMediaController {
         app.patch("/messages/{message_id}", this::patchMessageHandler);
         
         // Create endpoint for GET /accounts/{account_id}/messages
-        app.get("/account/{account_id}/messages", this::getMessagesByAccountHandler);
+        app.get("/accounts/{account_id}/messages", this::getMessagesByAccountHandler);
         return app;
     }
 
@@ -73,8 +73,7 @@ public class SocialMediaController {
         Account acc = mapper.readValue(context.body(), Account.class);
         Account new_acc = accountService.postAccount(acc);
         if (new_acc != null){
-            context.json(mapper.writeValueAsString(new_acc));
-            context.status(200);
+            context.status(200).json(mapper.writeValueAsString(new_acc));
         }else{
             context.status(400);
         }
@@ -86,8 +85,7 @@ public class SocialMediaController {
         Account acc = mapper.readValue(context.body(), Account.class);
         Account login = accountService.loginAccount(acc);
         if (login != null){
-            context.json(mapper.writeValueAsString(login));
-            context.status(200);
+            context.status(200).json(mapper.writeValueAsString(login));  
         }else{
             context.status(401);
         }
@@ -98,8 +96,7 @@ public class SocialMediaController {
         Message message = mapper.readValue(context.body(), Message.class);
         Message postedMessage = messageService.postMessage(message);
         if (postedMessage != null){
-            context.json(mapper.writeValueAsString(postedMessage));
-            context.status(200);
+            context.status(200).json(mapper.writeValueAsString(postedMessage));
         }else{
             context.status(400);
         }
@@ -108,12 +105,8 @@ public class SocialMediaController {
     private void getAllMessagesHandler(Context context) throws JsonProcessingException{
         
         List<Message> allMessages = messageService.getAllMessages();
+        context.status(200).json(allMessages);
         
-        if (!(allMessages.isEmpty())){
-            context.json(allMessages);
-        }
-
-        context.status(200);
     }
 
     private void getMessageHandler(Context context) throws JsonProcessingException{
@@ -147,8 +140,9 @@ public class SocialMediaController {
         Message updatedMessage = messageService.updateMessageById(message, message_id);
 
         if (updatedMessage != null){
-            context.json(mapper.writeValueAsString(updatedMessage));
-            context.status(200);
+
+            context.status(200).json(updatedMessage);
+            
         }else{
             context.status(400);
         }
@@ -156,15 +150,13 @@ public class SocialMediaController {
     }
 
     private void getMessagesByAccountHandler(Context context) throws JsonProcessingException{
-        ObjectMapper mapper = new ObjectMapper();
+        
         int account_id = context.pathParamAsClass("account_id", Integer.class).get();
         List<Message> userMessages = messageService.getMessagesByAccountId(account_id);
 
-        if (!(userMessages.isEmpty())){
-            context.json(userMessages);
-        }
 
-        context.status(200);
+        context.status(200).json(userMessages);
+        
     }
 
 

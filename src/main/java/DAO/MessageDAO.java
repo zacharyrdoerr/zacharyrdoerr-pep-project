@@ -21,7 +21,7 @@ public class MessageDAO{
             String sql = "insert into message (posted_by, message_text, time_posted_epoch) values (?,?,?);";
 
             // conversion of string to PreparedStatement
-            PreparedStatement ps = connection.prepareStatement(sql);
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
             // set values within PreparedStatement 
             ps.setInt(1, message.getPosted_by());
@@ -117,7 +117,8 @@ public class MessageDAO{
     }
 
     // method to update a specified message from the database by id
-    public void updateMessageById(String message, int id){
+    public int updateMessageById(String message, int id){
+        
         Connection connection = ConnectionUtil.getConnection();
 
         try{
@@ -127,11 +128,13 @@ public class MessageDAO{
             ps.setString(1, message);
             ps.setInt(2, id);
 
-            ps.executeUpdate();
-        
+            int rows_updated = ps.executeUpdate();
+            return rows_updated;
+
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }
+        return 0;
     }
 
     public List<Message> getMessagesByAccountId(int id){
@@ -147,7 +150,7 @@ public class MessageDAO{
             
             while(rs.next()){
                 Message message = new Message(rs.getInt("message_id"),
-                                            id, 
+                                            rs.getInt("posted_by"), 
                                             rs.getString("message_text"),
                                             rs.getLong("time_posted_epoch")
                                             );

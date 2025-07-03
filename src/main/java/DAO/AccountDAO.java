@@ -19,7 +19,7 @@ public class AccountDAO{
             String sql = "insert into account (username, password) values (?,?);";
 
             // conversion of string to PreparedStatement
-            PreparedStatement ps = connection.prepareStatement(sql);
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
             // set values within PreparedStatement to given username and password
             ps.setString(1, acc.getUsername());

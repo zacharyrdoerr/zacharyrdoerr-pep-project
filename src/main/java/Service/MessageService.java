@@ -54,11 +54,17 @@ public class MessageService{
 
     public Message updateMessageById(String message, int id){
 
-        messageDAO.updateMessageById(message, id);
+        int rows_updated = messageDAO.updateMessageById(message, id);
 
-        Message updated_message = getMessageById(id);
+        if (rows_updated > 0){
+            Message updated_message = getMessageById(id);
+            return updated_message;
+        }else{
+            return null;
+        }
+        
 
-        return updated_message;
+        
     }
 
     public List<Message> getMessagesByAccountId(int id){

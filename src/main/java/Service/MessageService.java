@@ -54,16 +54,16 @@ public class MessageService{
 
     public Message updateMessageById(String message, int id){
 
-        int rows_updated = messageDAO.updateMessageById(message, id);
+        if (getMessageById(id) != null && !(message.isBlank()) && message.length() < 256){
+            int rows_updated = messageDAO.updateMessageById(message, id);
 
-        if (rows_updated > 0){
-            Message updated_message = getMessageById(id);
-            return updated_message;
-        }else{
-            return null;
+            if (rows_updated > 0){
+                Message updated_message = getMessageById(id);
+                return updated_message;
+            }
         }
-        
 
+        return null;
         
     }
 

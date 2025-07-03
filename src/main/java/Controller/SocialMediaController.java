@@ -7,6 +7,7 @@ import Service.AccountService;
 import Service.MessageService;
 import Model.Account;
 import Model.Message;
+import Model.MessageUpdate;
 
 import io.javalin.Javalin;
 import io.javalin.http.Context;
@@ -135,9 +136,9 @@ public class SocialMediaController {
 
     private void patchMessageHandler(Context context) throws JsonProcessingException{
         ObjectMapper mapper = new ObjectMapper();
-        String message = mapper.readValue(context.body(), String.class);
+        MessageUpdate message = mapper.readValue(context.body(), MessageUpdate.class);
         int message_id = context.pathParamAsClass("message_id", Integer.class).get();
-        Message updatedMessage = messageService.updateMessageById(message, message_id);
+        Message updatedMessage = messageService.updateMessageById(message.getMessage_text(), message_id);
 
         if (updatedMessage != null){
 
